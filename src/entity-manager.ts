@@ -1,18 +1,17 @@
-import { BaseScene } from '../../scenes/base-scene';
-import { BaseEntity } from './base-entity';
+import { Entity } from './entity';
 
 type PrefabMap = { [key: string]: Phecs.Prefab };
 type EntityMap = { [name: string]: Phecs.Entity };
 
 export class EntityManager {
-  private scene: BaseScene;
+  private scene: Phaser.Scene;
 
   private prefabs: PrefabMap;
   private entitiesById: EntityMap;
   private entities: Phecs.Entity[];
 
   constructor(scene: Phaser.Scene) {
-    this.scene = scene as BaseScene;
+    this.scene = scene;
     this.prefabs = {};
 
     this.entitiesById = {};
@@ -24,8 +23,7 @@ export class EntityManager {
   }
 
   createPrefab(type: string, properties: any, depth: number = 0, x: number = 0, y: number = 0) {
-    const baseScene = this.scene as BaseScene;
-    const entity = new BaseEntity(type);
+    const entity = new Entity(type);
     const prefab = this.prefabs[type];
 
     const prefabProperties = {
@@ -36,9 +34,9 @@ export class EntityManager {
     };
 
     this.getComponentDefinitions(prefab).forEach((componentDefinition: Phecs.PrefabComponentDefinition) => {
-      const component = new componentDefinition.component(baseScene, {
+      const component = new componentDefinition.component(this.scene, {
         ...componentDefinition.data,
-        ...properties,
+        ...prefabProperties,
       }, entity);
 
       entity.components.push(component);

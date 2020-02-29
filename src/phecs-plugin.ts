@@ -1,5 +1,7 @@
-import { EntityManager } from '../lib/phecs/entity-manager';
-import { SystemsManager } from '../lib/phecs/systems-manager';
+import Phaser from 'phaser';
+
+import { EntityManager } from './entity-manager';
+import { SystemsManager } from './systems-manager';
 
 export class PhecsPlugin extends Phaser.Plugins.ScenePlugin {
   public phEntities: EntityManager;

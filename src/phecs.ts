@@ -2,6 +2,7 @@
 // import "core-js/fn/array.find"
 // ...
 
-import { add } from "./basic-math";
-
-console.log(add(1, 2))
+export * from './entity-manager';
+export * from './entity';
+export * from './phecs-plugin';
+export * from './systems-manager';

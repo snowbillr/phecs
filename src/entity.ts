@@ -1,6 +1,6 @@
 import { generateUuid } from "./uuid-util";
 
-export class BaseEntity implements Phecs.Entity {
+export class Entity implements Phecs.Entity {
   public type: string;
   public id: string;
   public components: Phecs.Component[];

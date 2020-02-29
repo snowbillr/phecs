@@ -1,14 +1,13 @@
-import 'phaser';
-import { BaseScene } from '../../scenes/base-scene';
+import Phaser from 'phaser';
 import { EntityManager } from './entity-manager';
 
 export class SystemsManager {
-  private scene: BaseScene;
+  private scene: Phaser.Scene;
 
   private systems: Phecs.System[];
 
   constructor(scene: Phaser.Scene) {
-    this.scene = scene as BaseScene;
+    this.scene = scene as Phaser.Scene;
 
     this.systems = [];
   }
@@ -51,16 +50,5 @@ export class SystemsManager {
     systemsList.forEach((klass) => {
       this.systems.push(new klass(this.scene));
     });
-  }
-
-  removeSystems(systemsList: Phecs.SystemConstructor[]) {
-    const systemsToRemove = this.systems.filter(system => systemsList.some(klass => system instanceof klass));
-
-    systemsToRemove.forEach(system => {
-      if (system.stop) system.stop(this.scene.phecs.phEntities);
-      if (system.destroy) system.destroy();
-    });
-
-    this.systems = this.systems.filter(system => !systemsToRemove.includes(system));
   }
 }
