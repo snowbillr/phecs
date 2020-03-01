@@ -49,6 +49,11 @@ export class PhecsPlugin extends Phaser.Plugins.ScenePlugin {
     this.add = new PhecsFactory(this.phEntities);
 
     this.scene.events.once(Phaser.Scenes.Events.CREATE, this.start, this);
+    this.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, this.shutdown, this);
+  }
+
+  update() {
+    this.phSystems.update(this.phEntities);
   }
 
   start() {
@@ -56,27 +61,12 @@ export class PhecsPlugin extends Phaser.Plugins.ScenePlugin {
     this.scene.events.on(Phaser.Scenes.Events.POST_UPDATE, this.update, this);
   }
 
-  stop() {
-    this.phSystems.stop(this.phEntities);
+  private shutdown() {
     this.scene.events.off(Phaser.Scenes.Events.POST_UPDATE, this.update, this);
-  }
 
-  update() {
-    this.phSystems.update(this.phEntities);
-  }
+    this.phSystems.stop(this.phEntities);
 
-  destroy() {
     this.phEntities.destroy();
-  }
-
-  reset() {
-    this.stop();
-    this.destroy();
-  }
-
-  shutdown() {
-    this.stop();
-    this.destroy();
     this.phSystems.destroy();
   }
 }
