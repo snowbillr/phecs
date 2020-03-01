@@ -33,10 +33,31 @@ export class EntityManager {
       ...properties
     };
 
-    this.getComponentDefinitions(prefab).forEach((componentDefinition: Phecs.PrefabComponentDefinition) => {
+    this.getComponentDefinitions(prefab.components).forEach((componentDefinition: Phecs.PrefabComponentDefinition) => {
       const component = new componentDefinition.component(this.scene, {
         ...componentDefinition.data,
         ...prefabProperties,
+      }, entity);
+
+      entity.components.push(component);
+    });
+
+    this.entitiesById[entity.id] = entity;
+    this.entities.push(entity);
+
+    return entity;
+  }
+
+  createEntity(components: Phecs.PrefabComponentDefinition[], x: number, y: number) {
+    const entity = new Entity('custom');
+    const componentDefinitions = this.getComponentDefinitions(components);
+
+    componentDefinitions.forEach((componentDefinition: Phecs.PrefabComponentDefinition) => {
+      const component = new componentDefinition.component(this.scene, {
+        ...componentDefinition.data,
+        x,
+        y,
+        depth: 0
       }, entity);
 
       entity.components.push(component);
@@ -71,8 +92,8 @@ export class EntityManager {
     this.entities = [];
   }
 
-  private getComponentDefinitions(prefab: Phecs.Prefab): Phecs.PrefabComponentDefinition[] {
-    return prefab.components.map(componentDefinition => {
+  private getComponentDefinitions(rawComponentList: (Phecs.PrefabComponentDefinition | Phecs.ComponentConstructor)[]): Phecs.PrefabComponentDefinition[] {
+    return rawComponentList.map(componentDefinition => {
       if (typeof componentDefinition === 'function') {
         return {
           component: componentDefinition,

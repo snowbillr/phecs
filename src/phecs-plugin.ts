@@ -27,8 +27,8 @@ class PhecsFactory {
     this.phEntities.createPrefab(type, properties, 0, x, y);
   }
 
-  entity() {
-
+  entity(components: any[], x: number, y: number) {
+    this.phEntities.createEntity(components, x, y);
   }
 }
 
