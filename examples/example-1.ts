@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { PhecsPlugin } from '../dist/phecs.es5'
+import { PhecsPlugin as PhecsPluginType } from '../dist/types/phecs-plugin';
 
 class PointComponent {
   private x: number;
@@ -48,10 +49,12 @@ class PointDisplaySystem {
 }
 
 class GameScene extends Phaser.Scene {
-  init() {
-    this.phecs.phSystems.registerSystems([PointDisplaySystem]);
+  private phecs!: PhecsPluginType;
 
-    this.phecs.phEntities.registerPrefab('point', {
+  init() {
+    this.phecs.add.system(PointDisplaySystem);
+
+    this.phecs.register.prefab('point', {
       components: [
         {
           component: PointComponent,
@@ -61,9 +64,9 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.phecs.phEntities.createPrefab('point', {}, 0, 10, 20);
-    this.phecs.phEntities.createPrefab('point', {}, 0, 100, 20);
-    this.phecs.phEntities.createPrefab('point', {}, 0, 50, 100);
+    this.phecs.add.prefab('point', {}, 10, 20);
+    this.phecs.add.prefab('point', {}, 100, 20);
+    this.phecs.add.prefab('point', {}, 50, 100);
 
     this.phecs.start();
   }
