@@ -48,9 +48,7 @@ class PointDisplaySystem {
 }
 
 class GameScene extends Phaser.Scene {
-  create() {
-    this.add.text(100, 100, 'hello world');
-
+  init() {
     this.phecs.phSystems.registerSystems([PointDisplaySystem]);
 
     this.phecs.phEntities.registerPrefab('point', {
@@ -60,7 +58,9 @@ class GameScene extends Phaser.Scene {
         }
       ]
     });
+  }
 
+  create() {
     this.phecs.phEntities.createPrefab('point', {}, 0, 10, 20);
     this.phecs.phEntities.createPrefab('point', {}, 0, 100, 20);
     this.phecs.phEntities.createPrefab('point', {}, 0, 50, 100);
