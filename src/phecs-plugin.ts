@@ -3,34 +3,8 @@ import Phaser from 'phaser';
 import { EntityManager } from './entity-manager';
 import { SystemsManager } from './systems-manager';
 
-class PhecsRegistry {
-  constructor(
-    private phEntities: EntityManager,
-    private phSystems: SystemsManager
-  ) {}
-
-  system(systemClass: Phecs.SystemConstructor) {
-    this.phSystems.registerSystems([systemClass]);
-  }
-
-  prefab(key: string, prefab: Phecs.Prefab) {
-    this.phEntities.registerPrefab(key, prefab);
-  }
-}
-
-class PhecsFactory {
-  constructor(
-    private phEntities: EntityManager,
-  ) {}
-
-  prefab(type: string, properties: Record<string, any>, x: number, y: number) {
-    this.phEntities.createPrefab(type, properties, 0, x, y);
-  }
-
-  entity(components: any[], x: number, y: number) {
-    this.phEntities.createEntity(components, x, y);
-  }
-}
+import { PhecsRegistry } from './phecs-registry';
+import { PhecsFactory } from './phecs-factory';
 
 export class PhecsPlugin extends Phaser.Plugins.ScenePlugin {
   public phEntities: EntityManager;
