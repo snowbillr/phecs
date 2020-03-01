@@ -1,24 +1,21 @@
 import { Entity } from './entity';
 
-type PrefabMap = { [key: string]: Phecs.Prefab };
-type EntityMap = { [name: string]: Phecs.Entity };
+type PrefabMap = { [key: string]: Prefab };
 
 export class EntityManager {
   private scene: Phaser.Scene;
 
   private prefabs: PrefabMap;
-  private entitiesById: EntityMap;
-  private entities: Phecs.Entity[];
+  private entities: Entity[];
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.prefabs = {};
 
-    this.entitiesById = {};
     this.entities = [];
   }
 
-  registerPrefab(key: string, prefab: Phecs.Prefab) {
+  registerPrefab(key: string, prefab: Prefab) {
     this.prefabs[key] = prefab;
   }
 
@@ -33,7 +30,7 @@ export class EntityManager {
       ...properties
     };
 
-    this.getComponentDefinitions(prefab.components).forEach((componentDefinition: Phecs.PrefabComponentDefinition) => {
+    this.getComponentDefinitions(prefab.components).forEach((componentDefinition: PrefabComponentDefinition) => {
       const component = new componentDefinition.component(this.scene, {
         ...componentDefinition.data,
         ...prefabProperties,
@@ -42,17 +39,16 @@ export class EntityManager {
       entity.components.push(component);
     });
 
-    this.entitiesById[entity.id] = entity;
     this.entities.push(entity);
 
     return entity;
   }
 
-  createEntity(components: Phecs.PrefabComponentDefinition[], x: number, y: number) {
+  createEntity(components: PrefabComponentDefinition[], x: number, y: number) {
     const entity = new Entity('custom');
     const componentDefinitions = this.getComponentDefinitions(components);
 
-    componentDefinitions.forEach((componentDefinition: Phecs.PrefabComponentDefinition) => {
+    componentDefinitions.forEach((componentDefinition: PrefabComponentDefinition) => {
       const component = new componentDefinition.component(this.scene, {
         ...componentDefinition.data,
         x,
@@ -63,17 +59,25 @@ export class EntityManager {
       entity.components.push(component);
     });
 
-    this.entitiesById[entity.id] = entity;
     this.entities.push(entity);
 
     return entity;
   }
 
+  // by id
+  // by component
+  // by prefab type
+  /*
+  query() {
+
+  }
+  */
+
   getEntityById(id: string) {
-    return this.entitiesById[id];
+    return this.entities.find(entity => entity.id === id);
   }
 
-  getEntities(identifier: Phecs.EntityIdentifier) {
+  getEntities(identifier: EntityIdentifier) {
     if (typeof identifier === 'string') {
       return this.getEntitiesByType(identifier);
     } else if (typeof identifier === 'function') {
@@ -88,11 +92,10 @@ export class EntityManager {
       entity.components.forEach(component => component.destroy());
     });
 
-    this.entitiesById = {};
     this.entities = [];
   }
 
-  private getComponentDefinitions(rawComponentList: (Phecs.PrefabComponentDefinition | Phecs.ComponentConstructor)[]): Phecs.PrefabComponentDefinition[] {
+  private getComponentDefinitions(rawComponentList: (PrefabComponentDefinition | ComponentConstructor)[]): PrefabComponentDefinition[] {
     return rawComponentList.map(componentDefinition => {
       if (typeof componentDefinition === 'function') {
         return {
@@ -105,7 +108,7 @@ export class EntityManager {
     });
   }
 
-  private getEntitiesByComponent(component: Phecs.ComponentConstructor) {
+  private getEntitiesByComponent(component: ComponentConstructor) {
     return this.entities.filter(entity => {
       return entity.hasComponent(component);
     });

@@ -7,8 +7,8 @@ import { PhecsRegistry } from './phecs-registry';
 import { PhecsFactory } from './phecs-factory';
 
 export class PhecsPlugin extends Phaser.Plugins.ScenePlugin {
-  public phEntities: EntityManager;
-  public phSystems: SystemsManager;
+  private phEntities: EntityManager;
+  private phSystems: SystemsManager;
 
   public register: PhecsRegistry;
   public add: PhecsFactory;

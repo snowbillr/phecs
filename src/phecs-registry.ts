@@ -7,11 +7,11 @@ export class PhecsRegistry {
     private phSystems: SystemsManager
   ) {}
 
-  system(systemClass: Phecs.SystemConstructor) {
+  system(systemClass: SystemConstructor) {
     this.phSystems.registerSystems([systemClass]);
   }
 
-  prefab(key: string, prefab: Phecs.Prefab) {
+  prefab(key: string, prefab: Prefab) {
     this.phEntities.registerPrefab(key, prefab);
   }
 }

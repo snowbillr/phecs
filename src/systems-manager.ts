@@ -4,7 +4,7 @@ import { EntityManager } from './entity-manager';
 export class SystemsManager {
   private scene: Phaser.Scene;
 
-  private systems: Phecs.System[];
+  private systems: System[];
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene as Phaser.Scene;
@@ -46,7 +46,7 @@ export class SystemsManager {
     this.systems = [];
   }
 
-  registerSystems(systemsList: Phecs.SystemConstructor[]) {
+  registerSystems(systemsList: SystemConstructor[]) {
     systemsList.forEach((klass) => {
       this.systems.push(new klass(this.scene));
     });
