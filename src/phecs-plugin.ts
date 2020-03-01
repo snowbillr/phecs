@@ -47,6 +47,8 @@ export class PhecsPlugin extends Phaser.Plugins.ScenePlugin {
 
     this.register = new PhecsRegistry(this.phEntities, this.phSystems);
     this.add = new PhecsFactory(this.phEntities);
+
+    this.scene.events.once(Phaser.Scenes.Events.CREATE, this.start, this);
   }
 
   start() {

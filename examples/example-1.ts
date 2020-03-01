@@ -69,8 +69,6 @@ class GameScene extends Phaser.Scene {
     this.phecs.add.prefab('point', {}, 50, 100);
 
     this.phecs.add.entity([PointComponent], 100, 100);
-
-    this.phecs.start();
   }
 }
 
