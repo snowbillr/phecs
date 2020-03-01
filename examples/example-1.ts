@@ -52,7 +52,7 @@ class GameScene extends Phaser.Scene {
   private phecs!: PhecsPluginType;
 
   init() {
-    this.phecs.add.system(PointDisplaySystem);
+    this.phecs.register.system(PointDisplaySystem);
 
     this.phecs.register.prefab('point', {
       components: [

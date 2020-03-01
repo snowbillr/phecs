@@ -5,8 +5,13 @@ import { SystemsManager } from './systems-manager';
 
 class PhecsRegistry {
   constructor(
-    private phEntities: EntityManager
+    private phEntities: EntityManager,
+    private phSystems: SystemsManager
   ) {}
+
+  system(systemClass: Phecs.SystemConstructor) {
+    this.phSystems.registerSystems([systemClass]);
+  }
 
   prefab(key: string, prefab: Phecs.Prefab) {
     this.phEntities.registerPrefab(key, prefab);
@@ -16,12 +21,7 @@ class PhecsRegistry {
 class PhecsFactory {
   constructor(
     private phEntities: EntityManager,
-    private phSystems: SystemsManager
   ) {}
-
-  system(systemClass: Phecs.SystemConstructor) {
-    this.phSystems.registerSystems([systemClass]);
-  }
 
   prefab(type: string, properties: Record<string, any>, x: number, y: number) {
     this.phEntities.createPrefab(type, properties, 0, x, y);
@@ -45,8 +45,8 @@ export class PhecsPlugin extends Phaser.Plugins.ScenePlugin {
     this.phEntities = new EntityManager(scene);
     this.phSystems = new SystemsManager(scene);
 
-    this.register = new PhecsRegistry(this.phEntities);
-    this.add = new PhecsFactory(this.phEntities, this.phSystems);
+    this.register = new PhecsRegistry(this.phEntities, this.phSystems);
+    this.add = new PhecsFactory(this.phEntities);
   }
 
   start() {
