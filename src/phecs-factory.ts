@@ -6,7 +6,7 @@ export class PhecsFactory {
   ) {}
 
   prefab(type: string, properties: Record<string, any>, x: number, y: number) {
-    return this.phEntities.createPrefab(type, properties, 0, x, y);
+    return this.phEntities.createPrefab(type, properties, x, y);
   }
 
   entity(components: any[], x: number, y: number) {

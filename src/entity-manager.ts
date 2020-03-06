@@ -19,14 +19,13 @@ export class EntityManager {
     this.prefabs[key] = prefab;
   }
 
-  createPrefab(type: string, properties: any, depth: number = 0, x: number = 0, y: number = 0) {
+  createPrefab(type: string, properties: any, x: number = 0, y: number = 0) {
     const entity = new Entity(type);
     const prefab = this.prefabs[type];
 
     const prefabProperties = {
       x,
       y,
-      depth,
       ...properties
     };
 
