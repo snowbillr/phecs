@@ -52,7 +52,6 @@ export class EntityManager {
         ...componentDefinition.data,
         x,
         y,
-        depth: 0
       }, entity);
 
       entity.components.push(component);

@@ -9,7 +9,6 @@ interface Entity {
 type EntityData = {
   x: number,
   y: number,
-  depth: number,
   [key: string]: any
 };
 
