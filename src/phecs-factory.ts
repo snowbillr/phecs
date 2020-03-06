@@ -6,10 +6,10 @@ export class PhecsFactory {
   ) {}
 
   prefab(type: string, properties: Record<string, any>, x: number, y: number) {
-    this.phEntities.createPrefab(type, properties, 0, x, y);
+    return this.phEntities.createPrefab(type, properties, 0, x, y);
   }
 
   entity(components: any[], x: number, y: number) {
-    this.phEntities.createEntity(components, x, y);
+    return this.phEntities.createEntity(components, x, y);
   }
 }
