@@ -19,42 +19,21 @@ export class EntityManager {
     this.prefabs[key] = prefab;
   }
 
-  createPrefab(type: string, properties: any, x: number = 0, y: number = 0) {
-    const entity = new Entity(type);
+  createPrefab(type: string, properties: any, x: number = 0, y: number = 0): Entity {
     const prefab = this.prefabs[type];
-
-    const prefabProperties = {
-      x,
-      y,
-      ...properties
-    };
-
-    this.getComponentDefinitions(prefab.components).forEach((componentDefinition: PrefabComponentDefinition) => {
-      const component = new componentDefinition.component(this.scene, {
-        ...componentDefinition.data,
-        ...prefabProperties,
-      }, entity);
-
-      entity.components.push(component);
-    });
-
-    this.entities.push(entity);
-
-    return entity;
+    return this.createEntity(prefab.components, x, y, type);
   }
 
-  createEntity(components: PrefabComponentDefinition[], x: number, y: number) {
-    const entity = new Entity('custom');
+  createEntity(components: (PrefabComponentDefinition | ComponentConstructor)[], x: number, y: number, type?: string): Entity {
+    const entity = new Entity(this.scene, type ?? 'custom');
     const componentDefinitions = this.getComponentDefinitions(components);
 
     componentDefinitions.forEach((componentDefinition: PrefabComponentDefinition) => {
-      const component = new componentDefinition.component(this.scene, {
+      entity.addComponent(componentDefinition.component, {
         ...componentDefinition.data,
         x,
-        y,
-      }, entity);
-
-      entity.components.push(component);
+        y
+      });
     });
 
     this.entities.push(entity);

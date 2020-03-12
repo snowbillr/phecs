@@ -14,6 +14,7 @@ type EntityData = {
 
 interface Component {
   [key: string]: any;
+  onAdd?(): void;
   destroy(): void;
 }
 

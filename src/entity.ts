@@ -1,14 +1,26 @@
 import { generateUuid } from "./uuid-util";
 
 export class Entity implements Entity {
+  private scene: Phaser.Scene;
+
   public type: string;
   public id: string;
   public components: Component[];
 
-  constructor(type: string) {
+  constructor(scene: Phaser.Scene, type: string) {
+    this.scene = scene;
+
     this.type = type;
     this.id = generateUuid();
     this.components = [];
+  }
+
+  addComponent(componentKlass: ComponentConstructor, data: EntityData): void {
+    const component = new componentKlass(this.scene, data, this);
+
+    component.onAdd?.();
+
+    this.components.push(component);
   }
 
   getComponent<T extends ComponentConstructor>(componentKlass: T): InstanceType<T> {

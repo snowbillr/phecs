@@ -2,13 +2,22 @@ import Phaser from 'phaser';
 
 import { PhecsPlugin } from '../dist/phecs.es5'
 
-class PointComponent {
+class DotComponent {
   private x: number;
   private y: number;
+
+  private graphics: Phaser.GameObjects.Graphics;
 
   constructor(scene: Phaser.Scene, data: any) {
     this.x = data.x;
     this.y = data.y;
+
+    this.graphics = scene.add.graphics();
+  }
+
+  onAdd() {
+    this.graphics.fillStyle(0x00FF00);
+    this.graphics.fillCircle(this.x, this.y, 10);
   }
 }
 
@@ -20,16 +29,18 @@ class PointDisplaySystem {
   }
 
   start(phEntities: any) {
-    const pointEntities = phEntities.getEntities(PointComponent);
+    /*
+    const pointEntities = phEntities.getEntities(DotComponent);
     
     const graphics = this.scene.add.graphics();
 
     graphics.fillStyle(0xFF0000, 1);
 
     pointEntities.forEach(pointEntity => {
-      const pointComponent = pointEntity.getComponent(PointComponent);
+      const pointComponent = pointEntity.getComponent(DotComponent);
       graphics.fillCircle(pointComponent.x, pointComponent.y, 10);
     });
+    */
   }
 
   /*
@@ -54,7 +65,7 @@ class GameScene extends Phaser.Scene {
     this.phecs.register.prefab('point', {
       components: [
         {
-          component: PointComponent,
+          component: DotComponent,
         }
       ]
     });
@@ -65,7 +76,7 @@ class GameScene extends Phaser.Scene {
     this.phecs.add.prefab('point', {}, 100, 20);
     this.phecs.add.prefab('point', {}, 50, 100);
 
-    this.phecs.add.entity([PointComponent], 100, 100);
+    this.phecs.add.entity([DotComponent], 100, 100);
   }
 }
 
