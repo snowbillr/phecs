@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { PhecsPlugin } from '../dist/phecs.es5'
+import { PhecsPlugin as PhecsPluginType } from '../dist/types/phecs-plugin';
 
 class DotComponent {
   private x: number;
@@ -59,6 +60,8 @@ class PointDisplaySystem {
 }
 
 class GameScene extends Phaser.Scene {
+  private phecs!: PhecsPluginType;
+
   init() {
     this.phecs.register.system(PointDisplaySystem);
 

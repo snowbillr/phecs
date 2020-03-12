@@ -1,4 +1,5 @@
 import { Entity } from './entity';
+import { stringify } from 'querystring';
 
 type PrefabMap = { [key: string]: Prefab };
 
@@ -21,15 +22,16 @@ export class EntityManager {
 
   createPrefab(type: string, properties: any, x: number = 0, y: number = 0): Entity {
     const prefab = this.prefabs[type];
-    return this.createEntity(prefab.components, x, y, type);
+    return this.createEntity(prefab.components, x, y, properties, type);
   }
 
-  createEntity(components: (PrefabComponentDefinition | ComponentConstructor)[], x: number, y: number, type?: string): Entity {
+  createEntity(components: (PrefabComponentDefinition | ComponentConstructor)[], x: number, y: number, properties?: Record<string, any>, type?: string): Entity {
     const entity = new Entity(this.scene, type ?? 'custom');
     const componentDefinitions = this.getComponentDefinitions(components);
 
     componentDefinitions.forEach((componentDefinition: PrefabComponentDefinition) => {
       entity.addComponent(componentDefinition.component, {
+        ...properties,
         ...componentDefinition.data,
         x,
         y
