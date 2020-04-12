@@ -1,6 +1,15 @@
 import { generateUuid } from "./uuid-util";
+import { ComponentConstructor, Component } from 'entity-manager';
 
-export class Entity implements Entity {
+export type EntityData = {
+  x: number,
+  y: number,
+  [key: string]: any
+};
+
+export type EntityIdentifier = ComponentConstructor | string;
+
+export class Entity {
   private scene: Phaser.Scene;
 
   public type: string;

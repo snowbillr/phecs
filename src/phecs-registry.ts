@@ -1,5 +1,5 @@
-import { EntityManager } from './entity-manager';
-import { SystemsManager } from './systems-manager';
+import { EntityManager, Prefab } from './entity-manager';
+import { SystemsManager, SystemConstructor } from './systems-manager';
 
 export class PhecsRegistry {
   constructor(

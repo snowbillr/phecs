@@ -1,6 +1,17 @@
 import Phaser from 'phaser';
 import { EntityManager } from './entity-manager';
 
+interface System {
+  start?(phEntities: any): void;
+  stop?(phEntities: any): void;
+  update?(phEntities: any): void;
+  destroy?(): void;
+}
+
+export interface SystemConstructor {
+  new(scene: Phaser.Scene): System;
+}
+
 export class SystemsManager {
   private scene: Phaser.Scene;
 

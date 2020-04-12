@@ -1,6 +1,27 @@
-import { Entity } from './entity';
+import { Entity, EntityData, EntityIdentifier } from './entity';
 
 type PrefabMap = { [key: string]: Prefab };
+
+type PrefabComponentDefinition = {
+  component: ComponentConstructor,
+  data?: {
+    [key: string]: any,
+  }
+}
+
+export type Prefab = {
+  components: (PrefabComponentDefinition | ComponentConstructor)[];
+}
+
+export interface Component {
+  [key: string]: any;
+  onAdd?(): void;
+  destroy(): void;
+}
+
+export interface ComponentConstructor {
+  new(scene: Phaser.Scene, data: EntityData, entity: Entity): Component;
+}
 
 export class EntityManager {
   private scene: Phaser.Scene;
