@@ -1,5 +1,4 @@
 import { Entity } from './entity';
-import { stringify } from 'querystring';
 
 type PrefabMap = { [key: string]: Prefab };
 
